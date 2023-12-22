@@ -4,6 +4,8 @@
 
 import 'dart:developer' as dev;
 
+import 'package:basic/mouse_tracker/mouse_tracker.dart';
+import 'package:basic/mouse_tracker/mouse_tracker_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -55,6 +57,7 @@ class MyApp extends StatelessWidget {
         // `context.watch()` or `context.read()`.
         // See `lib/main_menu/main_menu_screen.dart` for example usage.
         providers: [
+          ChangeNotifierProvider(create: (context) => MouseTrackerProvider()),
           Provider(create: (context) => SettingsController()),
           Provider(create: (context) => Palette()),
           ChangeNotifierProvider(create: (context) => PlayerProgress()),
@@ -74,31 +77,33 @@ class MyApp extends StatelessWidget {
         child: Builder(builder: (context) {
           final palette = context.watch<Palette>();
 
-          return MaterialApp.router(
-            title: 'My Flutter Game',
-            theme: ThemeData.from(
-              colorScheme: ColorScheme.fromSeed(
-                seedColor: palette.darkPen,
-                background: palette.backgroundMain,
-              ),
-              textTheme: TextTheme(
-                bodyMedium: TextStyle(color: palette.ink),
-              ),
-              useMaterial3: true,
-            ).copyWith(
-              // Make buttons more fun.
-              filledButtonTheme: FilledButtonThemeData(
-                style: FilledButton.styleFrom(
-                  textStyle: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+          return MouseTracker(
+            child: MaterialApp.router(
+              title: 'My Flutter Game',
+              theme: ThemeData.from(
+                colorScheme: ColorScheme.fromSeed(
+                  seedColor: palette.darkPen,
+                  background: palette.backgroundMain,
+                ),
+                textTheme: TextTheme(
+                  bodyMedium: TextStyle(color: palette.ink),
+                ),
+                useMaterial3: true,
+              ).copyWith(
+                // Make buttons more fun.
+                filledButtonTheme: FilledButtonThemeData(
+                  style: FilledButton.styleFrom(
+                    textStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
+              routeInformationProvider: router.routeInformationProvider,
+              routeInformationParser: router.routeInformationParser,
+              routerDelegate: router.routerDelegate,
             ),
-            routeInformationProvider: router.routeInformationProvider,
-            routeInformationParser: router.routeInformationParser,
-            routerDelegate: router.routerDelegate,
           );
         }),
       ),

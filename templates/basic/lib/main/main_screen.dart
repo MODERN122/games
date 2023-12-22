@@ -26,8 +26,21 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    movableItems.add(MovableStackItem());
+    addMovableStackItem();
     super.initState();
+  }
+
+  void addMovableStackItem() {
+    movableItems.add(MovableStackItem(
+      key: GlobalKey(),
+      onDragEnd: (item) => popUpMovedItem(item),
+    ));
+  }
+
+  void popUpMovedItem(MovableStackItem item) {
+    movableItems.remove(item);
+    movableItems.add(item);
+    setState(() {});
   }
 
   @override
@@ -47,8 +60,9 @@ class _MainScreenState extends State<MainScreen> {
                   tooltip: "Add",
                   icon: Icon(Icons.add),
                   onPressed: () {
-                    movableItems.add(MovableStackItem());
-                    setState(() {});
+                    setState(() {
+                      addMovableStackItem();
+                    });
                   },
                 ),
               ),
