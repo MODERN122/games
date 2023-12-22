@@ -4,25 +4,18 @@
 
 import 'package:basic/main/movable_stack_item.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
-import '../audio/audio_controller.dart';
-import '../audio/sounds.dart';
-import '../player_progress/player_progress.dart';
-import '../style/my_button.dart';
 import '../style/palette.dart';
-import '../style/responsive_screen.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  const MainScreen({super.key});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
-  List<Widget> movableItems = [];
+  List<MovableStackItem> movableItems = [];
 
   @override
   void initState() {
@@ -38,9 +31,11 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void popUpMovedItem(MovableStackItem item) {
-    movableItems.remove(item);
-    movableItems.add(item);
-    setState(() {});
+    setState(() {
+      if (movableItems.remove(item)) {
+        movableItems.add(item);
+      }
+    });
   }
 
   @override
@@ -51,6 +46,9 @@ class _MainScreenState extends State<MainScreen> {
         backgroundColor: palette.backgroundMainScreen,
         body: Stack(
           children: [
+            Stack(
+              children: movableItems,
+            ),
             Positioned(
               bottom: 0,
               right: 0,
@@ -71,24 +69,28 @@ class _MainScreenState extends State<MainScreen> {
               bottom: 20,
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: DragTarget(
+                child: DragTarget<MovableStackItem>(
                   builder: (context, candidateData, rejectedData) {
                     return IconButton(
                       tooltip: "Delete",
                       icon: Icon(Icons.delete),
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          if (movableItems.isNotEmpty) {
+                            movableItems.remove(movableItems.last);
+                          }
+                        });
+                      },
                     );
                   },
                   onAcceptWithDetails:
                       (DragTargetDetails<MovableStackItem> details) {
-                    movableItems.remove(details.data);
-                    setState(() {});
+                    setState(() {
+                      movableItems.remove(details.data);
+                    });
                   },
                 ),
               ),
-            ),
-            Stack(
-              children: movableItems,
             ),
           ],
         ));
