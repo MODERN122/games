@@ -3,9 +3,12 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:basic/main/movable_stack_item.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../style/palette.dart';
+import 'package:flutter_lock_task/flutter_lock_task.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -43,56 +46,73 @@ class _MainScreenState extends State<MainScreen> {
     final palette = context.watch<Palette>();
 
     return Scaffold(
-        backgroundColor: palette.backgroundMainScreen,
-        body: Stack(
-          children: [
-            Stack(
-              children: movableItems,
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 20, right: 20),
-                child: IconButton(
-                  tooltip: "Add",
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    setState(() {
-                      addMovableStackItem();
-                    });
-                  },
-                ),
+      appBar: AppBar(
+        elevation: 0,
+        toolbarHeight: 0,
+        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+      ),
+      backgroundColor: palette.backgroundMainScreen,
+      body: Stack(
+        children: [
+          Stack(
+            children: movableItems,
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 20, right: 20),
+              child: IconButton(
+                tooltip: "Add",
+                icon: Icon(Icons.add),
+                onPressed: () {
+                  FlutterLockTask().startLockTask().then((value) {
+                    if (kDebugMode) {
+                      print("startLockTask: " + value.toString());
+                    }
+                  });
+                  setState(() {
+                    addMovableStackItem();
+                  });
+                },
               ),
             ),
-            Positioned.fill(
-              bottom: 20,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: DragTarget<MovableStackItem>(
-                  builder: (context, candidateData, rejectedData) {
-                    return IconButton(
-                      tooltip: "Delete",
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        setState(() {
-                          if (movableItems.isNotEmpty) {
-                            movableItems.remove(movableItems.last);
-                          }
-                        });
-                      },
-                    );
-                  },
-                  onAcceptWithDetails:
-                      (DragTargetDetails<MovableStackItem> details) {
-                    setState(() {
-                      movableItems.remove(details.data);
-                    });
-                  },
-                ),
+          ),
+          Positioned.fill(
+            bottom: 20,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: DragTarget<MovableStackItem>(
+                builder: (context, candidateData, rejectedData) {
+                  return IconButton(
+                    tooltip: "Delete",
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      FlutterLockTask().stopLockTask().then((value) {
+                        if (kDebugMode) {
+                          print("stopLockTask: " + value.toString());
+                        }
+                      });
+                      setState(() {
+                        if (movableItems.isNotEmpty) {
+                          movableItems.remove(movableItems.last);
+                        }
+                      });
+                    },
+                  );
+                },
+                onAcceptWithDetails:
+                    (DragTargetDetails<MovableStackItem> details) {
+                  setState(() {
+                    movableItems.remove(details.data);
+                  });
+                },
               ),
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 }
