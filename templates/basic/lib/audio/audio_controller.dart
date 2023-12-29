@@ -79,7 +79,7 @@ class AudioController {
   /// The controller will ignore this call when the attached settings'
   /// [SettingsController.audioOn] is `true` or if its
   /// [SettingsController.soundsOn] is `false`.
-  void playSfx(SfxType type) {
+  void playSfx(SfxType type, {String asset = ""}) {
     final audioOn = _settings?.audioOn.value ?? false;
     if (!audioOn) {
       _log.fine(() => 'Ignoring playing sound ($type) because audio is muted.');
@@ -93,13 +93,20 @@ class AudioController {
     }
 
     _log.fine(() => 'Playing sound: $type');
-    final options = soundTypeToFilename(type);
-    final filename = options[_random.nextInt(options.length)];
-    _log.fine(() => '- Chosen filename: $filename');
 
-    final currentPlayer = _sfxPlayers[_currentSfxPlayer];
-    currentPlayer.play(AssetSource('sfx/$filename'),
-        volume: soundTypeToVolume(type));
+    if (type == SfxType.assets) {
+      final currentPlayer = _sfxPlayers[_currentSfxPlayer];
+      currentPlayer.play(AssetSource(asset), volume: soundTypeToVolume(type));
+    } else {
+      final options = soundTypeToFilename(type);
+      final filename = options[_random.nextInt(options.length)];
+      _log.fine(() => '- Chosen filename: $filename');
+
+      final currentPlayer = _sfxPlayers[_currentSfxPlayer];
+      currentPlayer.play(AssetSource('sfx/$filename'),
+          volume: soundTypeToVolume(type));
+    }
+
     _currentSfxPlayer = (_currentSfxPlayer + 1) % _sfxPlayers.length;
   }
 
@@ -199,7 +206,8 @@ class AudioController {
   Future<void> _playCurrentSongInPlaylist() async {
     _log.info(() => 'Playing ${_playlist.first} now.');
     try {
-      await _musicPlayer.play(AssetSource('music/${_playlist.first.filename}'));
+      await _musicPlayer.play(AssetSource('music/${_playlist.first.filename}'),
+          volume: 0.2);
     } catch (e) {
       _log.severe('Could not play song ${_playlist.first}', e);
     }

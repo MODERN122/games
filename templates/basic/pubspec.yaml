@@ -38,6 +38,9 @@ flutter:
     - assets/music/
     - assets/sfx/
     - assets/images/animals/
+    - assets/music/animals/sounds/
+    - assets/music/animals/names/ru/
+    - assets/music/animals/names/en/
 
   fonts:
     - family: Permanent Marker

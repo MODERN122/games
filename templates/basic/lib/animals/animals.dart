@@ -14,9 +14,9 @@ class Animal {
   Animal({
     required this.type,
   }) {
-    image = _baseImageUrl + type.name + ".svg";
-    soundName = _baseSoundNameUrl + type.name;
-    soundOfAnimal = _baseSoundOfAnimalUrl + type.name;
+    image = "$_baseImageUrl${type.name}.svg";
+    soundName = "$_baseSoundNameUrl${type.name}.wav";
+    soundOfAnimal = "$_baseSoundOfAnimalUrl${type.name}.wav";
     backGroundColor = RandomColor().randomColor();
   }
 
@@ -26,6 +26,6 @@ class Animal {
   late String soundName;
   late String soundOfAnimal;
   final String _baseImageUrl = "assets/images/animals/";
-  final String _baseSoundOfAnimalUrl = "assets/music/animals/sounds/";
-  final String _baseSoundNameUrl = "assets/music/animals/names/";
+  final String _baseSoundOfAnimalUrl = "music/animals/sounds/";
+  final String _baseSoundNameUrl = "music/animals/names/ru/";
 }

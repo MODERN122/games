@@ -1,7 +1,10 @@
 import 'package:basic/animals/animals.dart';
+import 'package:basic/audio/audio_controller.dart';
+import 'package:basic/audio/sounds.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jovial_svg/jovial_svg.dart';
+import 'package:provider/provider.dart';
 
 class MovableStackItem extends StatefulWidget {
   const MovableStackItem({
@@ -33,6 +36,7 @@ class _MovableStackItemState extends State<MovableStackItem> {
 
   @override
   Widget build(BuildContext context) {
+    final audioController = context.watch<AudioController>();
     var animal = widget.animal;
 
     return FutureBuilder(
@@ -92,7 +96,12 @@ class _MovableStackItemState extends State<MovableStackItem> {
               onDragUpdate: (DragUpdateDetails details) {},
               onDraggableCanceled: (velocity, offset) {},
               onDragCompleted: () {},
-              onDragStarted: () {},
+              onDragStarted: () {
+                audioController.playSfx(
+                  SfxType.assets,
+                  asset: animal.soundName,
+                );
+              },
               onDragEnd: (dragDetails) {
                 setState(() {
                   xPosition = dragDetails.offset.dx -
