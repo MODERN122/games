@@ -101,6 +101,10 @@ class _MovableStackItemState extends State<MovableStackItem> {
                   SfxType.assets,
                   asset: animal.soundName,
                 );
+                audioController.playSfx(
+                  SfxType.assets,
+                  asset: animal.soundOfAnimal,
+                );
               },
               onDragEnd: (dragDetails) {
                 setState(() {

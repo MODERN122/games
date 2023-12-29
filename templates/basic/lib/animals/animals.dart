@@ -16,7 +16,7 @@ class Animal {
   }) {
     image = "$_baseImageUrl${type.name}.svg";
     soundName = "$_baseSoundNameUrl${type.name}.wav";
-    soundOfAnimal = "$_baseSoundOfAnimalUrl${type.name}.wav";
+    soundOfAnimal = "$_baseSoundOfAnimalUrl${type.name}.mp3";
     backGroundColor = RandomColor().randomColor();
   }
 

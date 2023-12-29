@@ -94,15 +94,22 @@ class AudioController {
 
     _log.fine(() => 'Playing sound: $type');
 
+    var currentVolume = _musicPlayer.volume;
+    _musicPlayer.setVolume(0.2);
+
+    final currentPlayer = _sfxPlayers[_currentSfxPlayer];
+    _sfxPlayers[_currentSfxPlayer].onPlayerComplete.listen(
+      (event) {
+        _musicPlayer.setVolume(currentVolume);
+      },
+    );
     if (type == SfxType.assets) {
-      final currentPlayer = _sfxPlayers[_currentSfxPlayer];
       currentPlayer.play(AssetSource(asset), volume: soundTypeToVolume(type));
     } else {
       final options = soundTypeToFilename(type);
       final filename = options[_random.nextInt(options.length)];
       _log.fine(() => '- Chosen filename: $filename');
 
-      final currentPlayer = _sfxPlayers[_currentSfxPlayer];
       currentPlayer.play(AssetSource('sfx/$filename'),
           volume: soundTypeToVolume(type));
     }
@@ -206,8 +213,10 @@ class AudioController {
   Future<void> _playCurrentSongInPlaylist() async {
     _log.info(() => 'Playing ${_playlist.first} now.');
     try {
-      await _musicPlayer.play(AssetSource('music/${_playlist.first.filename}'),
-          volume: 0.2);
+      await _musicPlayer.play(
+        AssetSource('music/${_playlist.first.filename}'),
+        volume: 0.3,
+      );
     } catch (e) {
       _log.severe('Could not play song ${_playlist.first}', e);
     }

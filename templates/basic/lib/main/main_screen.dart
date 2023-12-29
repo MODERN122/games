@@ -6,7 +6,6 @@ import 'dart:math';
 
 import 'package:basic/animals/animals.dart';
 import 'package:basic/animals/animals_repository.dart';
-import 'package:basic/audio/audio_controller.dart';
 import 'package:basic/main/movable_stack_item.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
