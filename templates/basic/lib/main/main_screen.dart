@@ -2,10 +2,13 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:math';
+
+import 'package:basic/animals/animals.dart';
+import 'package:basic/animals/animals_repository.dart';
 import 'package:basic/main/movable_stack_item.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../style/palette.dart';
 import 'package:flutter_lock_task/flutter_lock_task.dart';
@@ -19,15 +22,20 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   List<MovableStackItem> movableItems = [];
+  bool isLocked = false;
 
   @override
   void initState() {
-    addMovableStackItem();
     super.initState();
+    checkIsLocked();
   }
 
   void addMovableStackItem() {
+    final animalsRepository = context.read<AnimalsRepository>();
+    int randomIndex =
+        Random().nextInt(animalsRepository.availableAnimalTypes.length);
     movableItems.add(MovableStackItem(
+      animal: Animal(type: animalsRepository.availableAnimalTypes[randomIndex]),
       key: GlobalKey(),
       onDragEnd: (item) => popUpMovedItem(item),
     ));
@@ -41,10 +49,21 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  Future checkIsLocked() async {
+    await FlutterLockTask().isInLockTaskMode().then(
+      (value) {
+        if (isLocked != value) {
+          setState(() {
+            isLocked = value;
+          });
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final palette = context.watch<Palette>();
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -67,14 +86,48 @@ class _MainScreenState extends State<MainScreen> {
                 tooltip: "Add",
                 icon: Icon(Icons.add),
                 onPressed: () {
-                  FlutterLockTask().startLockTask().then((value) {
-                    if (kDebugMode) {
-                      print("startLockTask: " + value.toString());
-                    }
-                  });
                   setState(() {
                     addMovableStackItem();
                   });
+                },
+              ),
+            ),
+          ),
+          Positioned.fill(
+            bottom: 20,
+            left: 20,
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: IconButton(
+                icon: Icon(
+                  (isLocked) ? Icons.lock_open : Icons.lock,
+                ),
+                onPressed: () async {
+                  if (isLocked) {
+                    FlutterLockTask().stopLockTask().then((value) {
+                      if (kDebugMode) {
+                        print("stopLockTask: $value");
+                      }
+                      setState(() {
+                        isLocked = false;
+                      });
+                      // if (value) {
+                      //   checkIsLocked();
+                      // }
+                    });
+                  } else {
+                    FlutterLockTask().startLockTask().then((value) {
+                      if (kDebugMode) {
+                        print("startLockTask: $value");
+                      }
+                      setState(() {
+                        isLocked = true;
+                      });
+                      // if (value) {
+                      //   checkIsLocked();
+                      // }
+                    });
+                  }
                 },
               ),
             ),
@@ -89,11 +142,6 @@ class _MainScreenState extends State<MainScreen> {
                     tooltip: "Delete",
                     icon: Icon(Icons.delete),
                     onPressed: () {
-                      FlutterLockTask().stopLockTask().then((value) {
-                        if (kDebugMode) {
-                          print("stopLockTask: " + value.toString());
-                        }
-                      });
                       setState(() {
                         if (movableItems.isNotEmpty) {
                           movableItems.remove(movableItems.last);

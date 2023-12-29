@@ -4,6 +4,7 @@
 
 import 'dart:developer' as dev;
 
+import 'package:basic/animals/animals_repository.dart';
 import 'package:basic/mouse_tracker/mouse_tracker.dart';
 import 'package:basic/mouse_tracker/mouse_tracker_provider.dart';
 import 'package:flutter/foundation.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         // `context.watch()` or `context.read()`.
         // See `lib/main_menu/main_menu_screen.dart` for example usage.
         providers: [
+          Provider(create: (context) => AnimalsRepository()),
           ChangeNotifierProvider(create: (context) => MouseTrackerProvider()),
           Provider(create: (context) => SettingsController()),
           Provider(create: (context) => Palette()),
