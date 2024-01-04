@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:io';
 import 'dart:math';
 
 import 'package:basic/animals/animals.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../style/palette.dart';
 import 'package:flutter_lock_task/flutter_lock_task.dart';
+import 'dart:async';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -23,11 +25,15 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   List<MovableStackItem> movableItems = [];
   bool isLocked = false;
+  Timer? timer;
 
   @override
   void initState() {
     super.initState();
-    checkIsLocked();
+    if (!kIsWeb && Platform.isAndroid) {
+      timer =
+          Timer.periodic(Duration(seconds: 1), (Timer t) => checkIsLocked());
+    }
   }
 
   void addMovableStackItem() {
@@ -49,6 +55,13 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  @override
+  void dispose() {
+    timer?.cancel();
+    //TODO dispose music animals
+    super.dispose();
+  }
+
   Future checkIsLocked() async {
     await FlutterLockTask().isInLockTaskMode().then(
       (value) {
@@ -65,102 +78,127 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     final palette = context.watch<Palette>();
 
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        toolbarHeight: 0,
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: false,
-      ),
-      backgroundColor: palette.backgroundMainScreen,
-      body: Stack(
-        children: [
-          Stack(
-            children: movableItems,
-          ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 20, right: 20),
-              child: IconButton(
-                tooltip: "Add",
-                icon: Icon(Icons.add),
-                onPressed: () {
-                  setState(() {
-                    addMovableStackItem();
-                  });
-                },
-              ),
+    return PopScope(
+      canPop: !isLocked,
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          toolbarHeight: 0,
+          backgroundColor: Colors.transparent,
+          automaticallyImplyLeading: false,
+        ),
+        backgroundColor: palette.backgroundMainScreen,
+        body: Stack(
+          children: [
+            Stack(
+              children: movableItems,
             ),
-          ),
-          Positioned.fill(
-            bottom: 20,
-            left: 20,
-            child: Align(
-              alignment: Alignment.bottomLeft,
-              child: IconButton(
-                icon: Icon(
-                  (isLocked) ? Icons.lock_open : Icons.lock,
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 20, right: 20),
+                child: IconButton(
+                  tooltip: "Add",
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    setState(() {
+                      addMovableStackItem();
+                    });
+                  },
                 ),
-                onPressed: () async {
-                  if (isLocked) {
-                    FlutterLockTask().stopLockTask().then((value) {
-                      if (kDebugMode) {
-                        print("stopLockTask: $value");
-                      }
-                      setState(() {
-                        isLocked = false;
-                      });
-                      // if (value) {
-                      //   checkIsLocked();
-                      // }
-                    });
-                  } else {
-                    FlutterLockTask().startLockTask().then((value) {
-                      if (kDebugMode) {
-                        print("startLockTask: $value");
-                      }
-                      setState(() {
-                        isLocked = true;
-                      });
-                      // if (value) {
-                      //   checkIsLocked();
-                      // }
-                    });
-                  }
-                },
               ),
             ),
-          ),
-          Positioned.fill(
-            bottom: 20,
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: DragTarget<MovableStackItem>(
-                builder: (context, candidateData, rejectedData) {
-                  return IconButton(
-                    tooltip: "Delete",
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
-                      setState(() {
-                        if (movableItems.isNotEmpty) {
-                          movableItems.remove(movableItems.last);
-                        }
-                      });
-                    },
-                  );
-                },
-                onAcceptWithDetails:
-                    (DragTargetDetails<MovableStackItem> details) {
-                  setState(() {
-                    movableItems.remove(details.data);
-                  });
-                },
+            Positioned.fill(
+              bottom: 20,
+              left: 20,
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: IconButton(
+                  icon: Icon(
+                    (isLocked) ? Icons.lock_open : Icons.lock,
+                  ),
+                  onPressed: () async {
+                    if (!kIsWeb && Platform.isAndroid) {
+                      if (isLocked) {
+                        FlutterLockTask().stopLockTask().then((value) {
+                          if (kDebugMode) {
+                            print("stopLockTask: $value");
+                          }
+                          setState(() {
+                            timer?.cancel();
+                          });
+                          // if (value) {
+                          //   checkIsLocked();
+                          // }
+                        });
+                      } else {
+                        FlutterLockTask().startLockTask().then((value) {
+                          if (kDebugMode) {
+                            print("startLockTask: $value");
+                          }
+                          setState(() {
+                            timer = Timer.periodic(Duration(seconds: 1),
+                                (Timer t) => checkIsLocked());
+                          });
+                          // if (value) {
+                          //   checkIsLocked();
+                          // }
+                        });
+                      }
+                    }
+                  },
+                ),
               ),
             ),
-          ),
-        ],
+            Positioned.fill(
+              bottom: 20,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: DragTarget<MovableStackItem>(
+                  builder: (context, candidateData, rejectedData) {
+                    return IconButton(
+                      tooltip: "Delete",
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        setState(() {
+                          if (movableItems.isNotEmpty) {
+                            movableItems.remove(movableItems.last);
+                          }
+                        });
+                      },
+                    );
+                  },
+                  onAcceptWithDetails:
+                      (DragTargetDetails<MovableStackItem> details) {
+                    setState(() {
+                      movableItems.remove(details.data);
+                    });
+                  },
+                ),
+              ),
+            ),
+            Positioned.fill(
+              bottom: -20,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: DragTarget<MovableStackItem>(
+                  builder: (context, candidateData, rejectedData) {
+                    return Container(
+                      height: 75,
+                    );
+                  },
+                  onAcceptWithDetails:
+                      (DragTargetDetails<MovableStackItem> details) {
+                    setState(() {
+                      movableItems.remove(details.data);
+                    });
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

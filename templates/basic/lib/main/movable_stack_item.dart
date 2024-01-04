@@ -1,6 +1,7 @@
 import 'package:basic/animals/animals.dart';
 import 'package:basic/audio/audio_controller.dart';
 import 'package:basic/audio/sounds.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jovial_svg/jovial_svg.dart';
@@ -111,7 +112,8 @@ class _MovableStackItemState extends State<MovableStackItem> {
                   xPosition = dragDetails.offset.dx -
                       bigRectSize.width * feedbackScale / 2;
                   yPosition = dragDetails.offset.dy -
-                      bigRectSize.height * feedbackScale / 2;
+                      bigRectSize.height * feedbackScale / 2 -
+                      (!kIsWeb ? 20 : 0);
                 });
                 widget.onDragEnd(widget);
               },
