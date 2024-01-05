@@ -5,13 +5,13 @@
     "delete":"Delete",
     "errorAnimalImageNotFound":"Image with {animalType} not found!",
     "@errorAnimalImageNotFound":{
-      "description": "A message with a single parameter",
-      "placeholders": {
+        "description": "A message with a single parameter",
+        "placeholders": {
         "animalType": {
-          "type": "String",
-          "example": "dog"
+            "type": "String",
+            "example": "dog"
         }
-      }
+        }
     },
     "play":"Play",
     "settings":"Settings",

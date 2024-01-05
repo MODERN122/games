@@ -1,17 +1,17 @@
 {
-    "appTitle": "Baby Animals App",    
-    "mainScreenTitle":"App for my son!",
-    "add":"Добавить",
-    "delete":"Удалить",
-    "errorAnimalImageNotFound":"Изображения с типом {animalType} не найдено!",
-    "play":"Играть",
-    "settings":"Настройки",
-    "musicByMrSmith":"Автор музыки Mr Smith",
-    "language":"Язык",
-    "music":"Музыка",
-    "player":"Игрок",
-    "soundFx":"Звуки",
-    "back":"Назад",
-    "close":"Закрыть",
-    "changeName":"Изменить имя"
-  }
+  "appTitle": "Baby Animals App",    
+  "mainScreenTitle":"App for my son!",
+  "add":"Добавить",
+  "delete":"Удалить",
+  "errorAnimalImageNotFound":"Изображения с типом {animalType} не найдено!",
+  "play":"Играть",
+  "settings":"Настройки",
+  "musicByMrSmith":"Автор музыки Mr Smith",
+  "language":"Язык",
+  "music":"Музыка",
+  "player":"Игрок",
+  "soundFx":"Звуки",
+  "back":"Назад",
+  "close":"Закрыть",
+  "changeName":"Изменить имя"
+}
