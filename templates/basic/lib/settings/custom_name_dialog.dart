@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'settings.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void showCustomNameDialog(BuildContext context) {
   showGeneralDialog(
@@ -35,7 +36,7 @@ class _CustomNameDialogState extends State<CustomNameDialog> {
         curve: Curves.easeOutCubic,
       ),
       child: SimpleDialog(
-        title: const Text('Change name'),
+        title: Text(AppLocalizations.of(context).changeName),
         children: [
           TextField(
             controller: _controller,
@@ -55,7 +56,7 @@ class _CustomNameDialogState extends State<CustomNameDialog> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text(AppLocalizations.of(context).close),
           ),
         ],
       ),

@@ -24,6 +24,7 @@ dependencies:
   random_color: ^1.0.6-nullsafety
   flutter_lock_task: ^0.0.2
   jovial_svg: ^1.1.20
+  flutter_svg: ^2.0.9
   intl: ^0.18.1
 
 dev_dependencies:
@@ -39,6 +40,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/flags/
     - assets/music/
     - assets/sfx/
     - assets/images/animals/
@@ -50,6 +52,15 @@ flutter:
     - family: Permanent Marker
       fonts:
         - asset: assets/fonts/Permanent_Marker/PermanentMarker-Regular.ttf
+    - family: FluorineLite
+      fonts:
+        - asset: assets/fonts/FluorineLite.ttf
+    - family: Troubleside
+      fonts:
+        - asset: assets/fonts/Troubleside.ttf
+    - family: Ustroke
+      fonts:
+        - asset: assets/fonts/Ustroke-Regular.ttf
 
 flutter_launcher_icons:
   android: true

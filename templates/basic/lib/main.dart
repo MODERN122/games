@@ -45,8 +45,26 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+
+  static void setLocale(BuildContext context, Locale newLocale) {
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state?.setLocale(newLocale);
+  }
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale? _locale;
+
+  setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,9 +97,18 @@ class MyApp extends StatelessWidget {
         ],
         child: Builder(builder: (context) {
           final palette = context.watch<Palette>();
+          final settings = context.watch<SettingsController>();
+          settings.languageEn.addListener(
+            () => setLocale(
+              settings.languageEn.value
+                  ? const Locale("en", "US")
+                  : const Locale("ru", "RU"),
+            ),
+          );
 
           return MouseTracker(
             child: MaterialApp.router(
+              locale: _locale,
               onGenerateTitle: (context) =>
                   AppLocalizations.of(context).appTitle,
               theme: ThemeData.from(
@@ -90,7 +117,8 @@ class MyApp extends StatelessWidget {
                   background: palette.backgroundMain,
                 ),
                 textTheme: TextTheme(
-                  bodyMedium: TextStyle(color: palette.ink),
+                  bodyMedium:
+                      TextStyle(color: palette.ink, fontFamily: 'Ustroke'),
                 ),
                 useMaterial3: true,
               ).copyWith(
@@ -105,8 +133,10 @@ class MyApp extends StatelessWidget {
                 ),
               ),
               localizationsDelegates: const [
+                AppLocalizations.delegate,
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
               ],
               supportedLocales: const [
                 Locale('en', 'US'), // English

@@ -48,13 +48,7 @@ class _MovableStackItemState extends State<MovableStackItem> {
               ? ScalableImageWidget(
                   si: snapshot.data!,
                 )
-              : Center(
-                  child: Text(
-                    AppLocalizations.of(context)
-                        .errorAnimalImageNotFound(animal.type.name),
-                    textAlign: TextAlign.center,
-                  ),
-                );
+              : SizedBox();
           return Positioned(
             top: yPosition,
             left: xPosition,

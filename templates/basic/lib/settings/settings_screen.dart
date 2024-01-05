@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../player_progress/player_progress.dart';
 import '../style/my_button.dart';
 import '../style/palette.dart';
 import '../style/responsive_screen.dart';
@@ -33,8 +32,7 @@ class SettingsScreen extends StatelessWidget {
               AppLocalizations.of(context).settings,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontFamily: 'Permanent Marker',
-                fontSize: 55,
+                fontSize: 45,
                 height: 1,
               ),
             ),
@@ -43,7 +41,10 @@ class SettingsScreen extends StatelessWidget {
               valueListenable: settings.soundsOn,
               builder: (context, soundsOn, child) => _SettingsLine(
                 AppLocalizations.of(context).soundFx,
-                Icon(soundsOn ? Icons.graphic_eq : Icons.volume_off),
+                Icon(
+                  soundsOn ? Icons.graphic_eq : Icons.volume_off,
+                  size: 40,
+                ),
                 onSelected: () => settings.toggleSoundsOn(),
               ),
             ),
@@ -51,31 +52,25 @@ class SettingsScreen extends StatelessWidget {
               valueListenable: settings.musicOn,
               builder: (context, musicOn, child) => _SettingsLine(
                 AppLocalizations.of(context).music,
-                Icon(musicOn ? Icons.music_note : Icons.music_off),
+                Icon(
+                  musicOn ? Icons.music_note : Icons.music_off,
+                  size: 40,
+                ),
                 onSelected: () => settings.toggleMusicOn(),
               ),
             ),
             ValueListenableBuilder<bool>(
-              valueListenable: settings.musicOn,
+              valueListenable: settings.languageEn,
               builder: (context, languageEn, child) => _SettingsLine(
                 AppLocalizations.of(context).language,
-                Icon(languageEn ? Icons.language : Icons.sign_language),
+                Image.asset(
+                  "assets/images/flags/${languageEn ? "en" : "ru"}.png",
+                  semanticLabel: AppLocalizations.of(context).language,
+                  height: 40,
+                ),
                 onSelected: () => settings.toggleLanguageEn(),
               ),
             ),
-            // _SettingsLine(
-            //   'Reset progress',
-            //   const Icon(Icons.delete),
-            //   onSelected: () {
-            //     context.read<PlayerProgress>().reset();
-
-            //     final messenger = ScaffoldMessenger.of(context);
-            //     messenger.showSnackBar(
-            //       const SnackBar(
-            //           content: Text('Player progress has been reset.')),
-            //     );
-            //   },
-            // ),
             _gap,
           ],
         ),
@@ -83,7 +78,7 @@ class SettingsScreen extends StatelessWidget {
           onPressed: () {
             GoRouter.of(context).pop();
           },
-          child: const Text('Back'),
+          child: Text(AppLocalizations.of(context).back),
         ),
       ),
     );
@@ -101,27 +96,29 @@ class _SettingsLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkResponse(
-      highlightShape: BoxShape.rectangle,
-      onTap: onSelected,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Text(
-                title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontFamily: 'Permanent Marker',
-                  fontSize: 30,
+    return SizedBox(
+      height: 90,
+      child: InkResponse(
+        highlightShape: BoxShape.rectangle,
+        onTap: onSelected,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 30,
+                  ),
                 ),
               ),
-            ),
-            icon,
-          ],
+              icon,
+            ],
+          ),
         ),
       ),
     );

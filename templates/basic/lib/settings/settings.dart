@@ -2,7 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:basic/l10n/languages.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 
@@ -63,7 +62,7 @@ class SettingsController {
 
   void toggleLanguageEn() {
     languageEn.value = !languageEn.value;
-    _store.saveSoundsOn(languageEn.value);
+    _store.saveLanguageEn(languageEn.value);
   }
 
   /// Asynchronously loads values from the injected persistence store.
@@ -84,6 +83,9 @@ class SettingsController {
       _store
           .getMusicOn(defaultValue: true)
           .then((value) => musicOn.value = value),
+      _store
+          .getLanguageEn(defaultValue: true)
+          .then((value) => languageEn.value = value),
     ]);
 
     _log.fine(() => 'Loaded settings: $loadedValues');

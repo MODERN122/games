@@ -61,14 +61,14 @@ class LocalStorageSettingsPersistence extends SettingsPersistence {
   }
 
   @override
-  Future<bool> getLanguageEn({required bool defaultValue}) {
-    // TODO: implement getLanguageEn
-    throw UnimplementedError();
+  Future<bool> getLanguageEn({required bool defaultValue}) async {
+    final prefs = await instanceFuture;
+    return prefs.getBool('languageEn') ?? defaultValue;
   }
 
   @override
-  Future<void> saveLanguageEn(bool value) {
-    // TODO: implement saveLanguageEn
-    throw UnimplementedError();
+  Future<void> saveLanguageEn(bool value) async {
+    final prefs = await instanceFuture;
+    await prefs.setBool('languageEn', value);
   }
 }

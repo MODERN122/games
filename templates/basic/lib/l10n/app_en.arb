@@ -19,5 +19,8 @@
     "language":"Language",
     "music":"Music",
     "player":"Player",
-    "soundFx":"Sound FX"
+    "soundFx":"Sound",
+    "back":"Back",
+    "close":"Close",
+    "changeName":"Change name"
 }
