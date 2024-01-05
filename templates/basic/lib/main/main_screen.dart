@@ -37,13 +37,16 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  int indexCount = 0;
+
   void addMovableStackItem(BuildContext context) {
     final animalsRepository = context.read<AnimalsRepository>();
-    int randomIndex =
-        Random().nextInt(animalsRepository.availableAnimalTypes.length);
+    // int randomIndex =
+    //     Random().nextInt(animalsRepository.availableAnimalTypes.length);
+    int index = indexCount++ % animalsRepository.availableAnimalTypes.length;
     movableItems.add(MovableStackItem(
       animal: Animal(
-          type: animalsRepository.availableAnimalTypes[randomIndex],
+          type: animalsRepository.availableAnimalTypes[index],
           context: context),
       key: GlobalKey(),
       onDragEnd: (item) => popUpMovedItem(item),
