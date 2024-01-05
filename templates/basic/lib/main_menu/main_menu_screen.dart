@@ -12,6 +12,7 @@ import '../settings/settings.dart';
 import '../style/my_button.dart';
 import '../style/palette.dart';
 import '../style/responsive_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});
@@ -30,8 +31,8 @@ class MainMenuScreen extends StatelessWidget {
           squarishMainArea: Center(
             child: Transform.rotate(
               angle: -0.1,
-              child: const Text(
-                'App for my son!',
+              child: Text(
+                AppLocalizations.of(context).appTitle,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'Permanent Marker',
@@ -49,12 +50,12 @@ class MainMenuScreen extends StatelessWidget {
                   audioController.playSfx(SfxType.buttonTap);
                   GoRouter.of(context).go('/play');
                 },
-                child: const Text('Play'),
+                child: Text(AppLocalizations.of(context).play),
               ),
               _gap,
               MyButton(
                 onPressed: () => GoRouter.of(context).push('/settings'),
-                child: const Text('Settings'),
+                child: Text(AppLocalizations.of(context).settings),
               ),
               _gap,
               Padding(
@@ -70,7 +71,7 @@ class MainMenuScreen extends StatelessWidget {
                 ),
               ),
               _gap,
-              const Text('Music by Mr Smith'),
+              Text(AppLocalizations.of(context).musicByMrSmith),
               _gap,
             ],
           ),

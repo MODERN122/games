@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:basic/l10n/languages.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 
@@ -26,14 +27,14 @@ class SettingsController {
   /// [musicOn] preferences when they temporarily mute the game.
   ValueNotifier<bool> audioOn = ValueNotifier(true);
 
-  /// The player's name. Used for things like high score lists.
-  ValueNotifier<String> playerName = ValueNotifier('Player');
-
   /// Whether or not the sound effects (sfx) are on.
   ValueNotifier<bool> soundsOn = ValueNotifier(true);
 
   /// Whether or not the music is on.
   ValueNotifier<bool> musicOn = ValueNotifier(true);
+
+  /// Whether or not the language is en.
+  ValueNotifier<bool> languageEn = ValueNotifier(true);
 
   /// Creates a new instance of [SettingsController] backed by [store].
   ///
@@ -43,11 +44,6 @@ class SettingsController {
   SettingsController({SettingsPersistence? store})
       : _store = store ?? LocalStorageSettingsPersistence() {
     _loadStateFromPersistence();
-  }
-
-  void setPlayerName(String name) {
-    playerName.value = name;
-    _store.savePlayerName(playerName.value);
   }
 
   void toggleAudioOn() {
@@ -63,6 +59,11 @@ class SettingsController {
   void toggleSoundsOn() {
     soundsOn.value = !soundsOn.value;
     _store.saveSoundsOn(soundsOn.value);
+  }
+
+  void toggleLanguageEn() {
+    languageEn.value = !languageEn.value;
+    _store.saveSoundsOn(languageEn.value);
   }
 
   /// Asynchronously loads values from the injected persistence store.
@@ -83,7 +84,6 @@ class SettingsController {
       _store
           .getMusicOn(defaultValue: true)
           .then((value) => musicOn.value = value),
-      _store.getPlayerName().then((value) => playerName.value = value),
     ]);
 
     _log.fine(() => 'Loaded settings: $loadedValues');

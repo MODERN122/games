@@ -1,0 +1,23 @@
+{
+    "appTitle": "Baby Animals App",
+    "mainScreenTitle":"App for my son!",
+    "add":"Add",
+    "delete":"Delete",
+    "errorAnimalImageNotFound":"Image with {animalType} not found!",
+    "@errorAnimalImageNotFound":{
+      "description": "A message with a single parameter",
+      "placeholders": {
+        "animalType": {
+          "type": "String",
+          "example": "dog"
+        }
+      }
+    },
+    "play":"Play",
+    "settings":"Settings",
+    "musicByMrSmith":"Music by Mr Smith",
+    "language":"Language",
+    "music":"Music",
+    "player":"Player",
+    "soundFx":"Sound FX"
+}

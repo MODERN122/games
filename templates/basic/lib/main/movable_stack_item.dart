@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jovial_svg/jovial_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MovableStackItem extends StatefulWidget {
   const MovableStackItem({
@@ -49,7 +50,8 @@ class _MovableStackItemState extends State<MovableStackItem> {
                 )
               : Center(
                   child: Text(
-                    "Image with ${animal.type.name} not found!",
+                    AppLocalizations.of(context)
+                        .errorAnimalImageNotFound(animal.type.name),
                     textAlign: TextAlign.center,
                   ),
                 );

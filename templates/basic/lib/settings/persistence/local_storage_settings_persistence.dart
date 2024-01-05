@@ -59,4 +59,16 @@ class LocalStorageSettingsPersistence extends SettingsPersistence {
     final prefs = await instanceFuture;
     await prefs.setBool('soundsOn', value);
   }
+
+  @override
+  Future<bool> getLanguageEn({required bool defaultValue}) {
+    // TODO: implement getLanguageEn
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> saveLanguageEn(bool value) {
+    // TODO: implement saveLanguageEn
+    throw UnimplementedError();
+  }
 }

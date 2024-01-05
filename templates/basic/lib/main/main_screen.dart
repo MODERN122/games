@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import '../style/palette.dart';
 import 'package:flutter_lock_task/flutter_lock_task.dart';
 import 'dart:async';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -36,12 +37,14 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  void addMovableStackItem() {
+  void addMovableStackItem(BuildContext context) {
     final animalsRepository = context.read<AnimalsRepository>();
     int randomIndex =
         Random().nextInt(animalsRepository.availableAnimalTypes.length);
     movableItems.add(MovableStackItem(
-      animal: Animal(type: animalsRepository.availableAnimalTypes[randomIndex]),
+      animal: Animal(
+          type: animalsRepository.availableAnimalTypes[randomIndex],
+          context: context),
       key: GlobalKey(),
       onDragEnd: (item) => popUpMovedItem(item),
     ));
@@ -99,11 +102,11 @@ class _MainScreenState extends State<MainScreen> {
               child: Padding(
                 padding: EdgeInsets.only(bottom: 20, right: 20),
                 child: IconButton(
-                  tooltip: "Add",
+                  tooltip: AppLocalizations.of(context).add,
                   icon: Icon(Icons.add),
                   onPressed: () {
                     setState(() {
-                      addMovableStackItem();
+                      addMovableStackItem(context);
                     });
                   },
                 ),
@@ -158,7 +161,7 @@ class _MainScreenState extends State<MainScreen> {
                 child: DragTarget<MovableStackItem>(
                   builder: (context, candidateData, rejectedData) {
                     return IconButton(
-                      tooltip: "Delete",
+                      tooltip: AppLocalizations.of(context).delete,
                       icon: Icon(Icons.delete),
                       onPressed: () {
                         setState(() {

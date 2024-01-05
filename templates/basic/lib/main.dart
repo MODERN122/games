@@ -19,6 +19,8 @@ import 'player_progress/player_progress.dart';
 import 'router.dart';
 import 'settings/settings.dart';
 import 'style/palette.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   // Basic logging setup.
@@ -80,7 +82,8 @@ class MyApp extends StatelessWidget {
 
           return MouseTracker(
             child: MaterialApp.router(
-              title: 'My Flutter Game',
+              onGenerateTitle: (context) =>
+                  AppLocalizations.of(context).appTitle,
               theme: ThemeData.from(
                 colorScheme: ColorScheme.fromSeed(
                   seedColor: palette.darkPen,
@@ -101,6 +104,14 @@ class MyApp extends StatelessWidget {
                   ),
                 ),
               ),
+              localizationsDelegates: const [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: const [
+                Locale('en', 'US'), // English
+                Locale('ru', 'RU'), // Russian
+              ],
               routeInformationProvider: router.routeInformationProvider,
               routeInformationParser: router.routeInformationParser,
               routerDelegate: router.routerDelegate,
