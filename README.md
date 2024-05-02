@@ -2,7 +2,7 @@ A starter Flutter project with a minimal shell of a game
 including the following features:
 
 - main menu screen
-- basic navigation
+- baby_animals_app navigation
 - game-y theming
 - settings
 - sound

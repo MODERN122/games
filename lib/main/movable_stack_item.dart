@@ -1,6 +1,6 @@
-import 'package:basic/animals/animals.dart';
-import 'package:basic/audio/audio_controller.dart';
-import 'package:basic/audio/sounds.dart';
+import 'package:baby_animals_app/animals/animals.dart';
+import 'package:baby_animals_app/audio/audio_controller.dart';
+import 'package:baby_animals_app/audio/sounds.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -1,4 +1,4 @@
-import 'package:basic/animals/animals.dart';
+import 'package:baby_animals_app/animals/animals.dart';
 
 class AnimalsRepository {
   final List<AnimalType> availableAnimalTypes = [];

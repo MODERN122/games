@@ -1,4 +1,4 @@
-import 'package:basic/mouse_tracker/mouse_tracker_provider.dart';
+import 'package:baby_animals_app/mouse_tracker/mouse_tracker_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

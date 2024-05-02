@@ -1,4 +1,4 @@
-package com.example.basic
+package com.modern.babyanimalsapp
 
 import io.flutter.embedding.android.FlutterActivity
 

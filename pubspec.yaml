@@ -1,10 +1,10 @@
-name: basic
-description: A basic game built in Flutter.
+name: baby_animals_app
+description: App with animals voices for babies
 
 # Prevent accidental publishing to pub.dev.
 publish_to: 'none'
 
-version: 0.0.1+1
+version: 1.0.0+1
 
 environment:
   sdk: ^3.0.0

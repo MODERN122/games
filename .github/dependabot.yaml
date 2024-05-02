@@ -8,7 +8,7 @@ updates:
     labels:
       - "autosubmit"
   - package-ecosystem: "pub"
-    directory: "templates/basic/"
+    directory: "templates/baby_animals_app/"
     schedule:
       interval: "daily"
     labels:

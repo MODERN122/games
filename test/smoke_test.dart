@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:basic/main.dart';
+import 'package:baby_animals_app/main.dart';
 
 void main() {
   testWidgets('smoke test', (tester) async {

@@ -4,9 +4,9 @@
 
 import 'dart:developer' as dev;
 
-import 'package:basic/animals/animals_repository.dart';
-import 'package:basic/mouse_tracker/mouse_tracker.dart';
-import 'package:basic/mouse_tracker/mouse_tracker_provider.dart';
+import 'package:baby_animals_app/animals/animals_repository.dart';
+import 'package:baby_animals_app/mouse_tracker/mouse_tracker.dart';
+import 'package:baby_animals_app/mouse_tracker/mouse_tracker_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,7 +23,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
-  // Basic logging setup.
+  // Baby animals app logging setup.
   Logger.root.level = kDebugMode ? Level.FINE : Level.INFO;
   Logger.root.onRecord.listen((record) {
     dev.log(
