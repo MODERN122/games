@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Baby animals app",
+            "name": "Baby Animals App",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "Baby animals app (profile mode)",
+            "name": "Baby Animals App (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "Baby animals app (release mode)",
+            "name": "Baby Animals App (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

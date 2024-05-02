@@ -1,5 +1,5 @@
 # Run with tooling from https://github.com/flutter/codelabs/tree/main/tooling/codelab_rebuild
-name: Baby animals app template rebuild
+name: Baby Animals App template rebuild
 steps:
   - name: Remove runners
     rmdirs: 
