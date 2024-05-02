@@ -3,10 +3,10 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:io';
-import 'dart:math';
 
 import 'package:basic/animals/animals.dart';
 import 'package:basic/animals/animals_repository.dart';
+import 'package:basic/main/full_screen_modal.dart';
 import 'package:basic/main/movable_stack_item.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +27,7 @@ class _MainScreenState extends State<MainScreen> {
   List<MovableStackItem> movableItems = [];
   bool isLocked = false;
   Timer? timer;
+  int indexCount = 0;
 
   @override
   void initState() {
@@ -37,7 +38,22 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  int indexCount = 0;
+  // this method shows the modal dialog
+  void _showModal(BuildContext context) async {
+    // show the modal dialog and pass some data to it
+    final result = await Navigator.of(context).push(FullScreenModal());
+    // ignore: use_build_context_synchronously
+    if (result == AppLocalizations.of(context).unlock) {
+      FlutterLockTask().stopLockTask().then((value) {
+        if (kDebugMode) {
+          print("stopLockTask: $value");
+        }
+        setState(() {
+          timer?.cancel();
+        });
+      });
+    }
+  }
 
   void addMovableStackItem(BuildContext context) {
     final animalsRepository = context.read<AnimalsRepository>();
@@ -124,20 +140,13 @@ class _MainScreenState extends State<MainScreen> {
                   icon: Icon(
                     (isLocked) ? Icons.lock_open : Icons.lock,
                   ),
+                  tooltip: (isLocked)
+                      ? AppLocalizations.of(context).unlock
+                      : AppLocalizations.of(context).lock,
                   onPressed: () async {
                     if (!kIsWeb && Platform.isAndroid) {
                       if (isLocked) {
-                        FlutterLockTask().stopLockTask().then((value) {
-                          if (kDebugMode) {
-                            print("stopLockTask: $value");
-                          }
-                          setState(() {
-                            timer?.cancel();
-                          });
-                          // if (value) {
-                          //   checkIsLocked();
-                          // }
-                        });
+                        _showModal(context);
                       } else {
                         FlutterLockTask().startLockTask().then((value) {
                           if (kDebugMode) {
@@ -147,9 +156,6 @@ class _MainScreenState extends State<MainScreen> {
                             timer = Timer.periodic(Duration(seconds: 1),
                                 (Timer t) => checkIsLocked());
                           });
-                          // if (value) {
-                          //   checkIsLocked();
-                          // }
                         });
                       }
                     }
@@ -185,13 +191,13 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             Positioned.fill(
-              bottom: -20,
+              bottom: -40,
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: DragTarget<MovableStackItem>(
                   builder: (context, candidateData, rejectedData) {
                     return Container(
-                      height: 75,
+                      height: 95,
                     );
                   },
                   onAcceptWithDetails:

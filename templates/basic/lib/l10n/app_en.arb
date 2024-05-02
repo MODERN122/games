@@ -22,5 +22,7 @@
     "soundFx":"Sound",
     "back":"Back",
     "close":"Close",
-    "changeName":"Change name"
+    "changeName":"Change name",
+    "lock":"Lock",
+    "unlock":"Unlock"
 }
