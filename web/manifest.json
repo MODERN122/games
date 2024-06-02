@@ -1,6 +1,6 @@
 {
-    "name": "baby_animals_app",
-    "short_name": "baby_animals_app",
+    "name": "Baby Animals App",
+    "short_name": "Baby Animals App",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -28,12 +29,15 @@ class SettingsScreen extends StatelessWidget {
         squarishMainArea: ListView(
           children: [
             _gap,
-            Text(
-              AppLocalizations.of(context).settings,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 45,
-                height: 1,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  AppLocalizations.of(context).settings,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(),
+                ),
               ),
             ),
             _gap,
