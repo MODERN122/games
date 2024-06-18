@@ -35,7 +35,7 @@ void main() async {
   });
 
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   // Lock the game to portrait mode on mobile devices.
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

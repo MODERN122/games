@@ -10,6 +10,7 @@ import 'package:baby_animals_app/main/full_screen_modal.dart';
 import 'package:baby_animals_app/main/movable_stack_item.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../style/palette.dart';
 import 'package:flutter_lock_task/flutter_lock_task.dart';
@@ -103,6 +104,7 @@ class _MainScreenState extends State<MainScreen> {
     return PopScope(
       canPop: !isLocked,
       child: Scaffold(
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
           elevation: 0,
           toolbarHeight: 0,
