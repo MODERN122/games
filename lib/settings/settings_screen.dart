@@ -2,8 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:baby_animals_app/l10n/languages.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +20,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settings = context.watch<SettingsController>();
+    final settingsController = context.watch<SettingsController>();
     final palette = context.watch<Palette>();
 
     return Scaffold(
@@ -42,37 +42,37 @@ class SettingsScreen extends StatelessWidget {
             ),
             _gap,
             ValueListenableBuilder<bool>(
-              valueListenable: settings.soundsOn,
+              valueListenable: settingsController.soundsOn,
               builder: (context, soundsOn, child) => _SettingsLine(
                 AppLocalizations.of(context).soundFx,
                 Icon(
                   soundsOn ? Icons.graphic_eq : Icons.volume_off,
                   size: 40,
                 ),
-                onSelected: () => settings.toggleSoundsOn(),
+                onSelected: () => settingsController.toggleSoundsOn(),
               ),
             ),
             ValueListenableBuilder<bool>(
-              valueListenable: settings.musicOn,
+              valueListenable: settingsController.musicOn,
               builder: (context, musicOn, child) => _SettingsLine(
                 AppLocalizations.of(context).music,
                 Icon(
                   musicOn ? Icons.music_note : Icons.music_off,
                   size: 40,
                 ),
-                onSelected: () => settings.toggleMusicOn(),
+                onSelected: () => settingsController.toggleMusicOn(),
               ),
             ),
-            ValueListenableBuilder<bool>(
-              valueListenable: settings.languageEn,
-              builder: (context, languageEn, child) => _SettingsLine(
+            ValueListenableBuilder<Language>(
+              valueListenable: settingsController.language,
+              builder: (context, language, child) => _SettingsLine(
                 AppLocalizations.of(context).language,
                 Image.asset(
-                  "assets/images/flags/${languageEn ? "en" : "ru"}.png",
+                  "assets/images/flags/${language.name}.png",
                   semanticLabel: AppLocalizations.of(context).language,
                   height: 40,
                 ),
-                onSelected: () => settings.toggleLanguageEn(),
+                onSelected: () => settingsController.toggleLanguage(),
               ),
             ),
             _gap,

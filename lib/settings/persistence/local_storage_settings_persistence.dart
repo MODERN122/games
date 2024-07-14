@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:baby_animals_app/l10n/languages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'settings_persistence.dart';
@@ -61,14 +62,15 @@ class LocalStorageSettingsPersistence extends SettingsPersistence {
   }
 
   @override
-  Future<bool> getLanguageEn({required bool defaultValue}) async {
+  Future<Language> getLanguage({required Language defaultValue}) async {
     final prefs = await instanceFuture;
-    return prefs.getBool('languageEn') ?? defaultValue;
+    var languageName = prefs.getString('language') ?? defaultValue.name;
+    return Language.values.byName(languageName);
   }
 
   @override
-  Future<void> saveLanguageEn(bool value) async {
+  Future<void> saveLanguage(Language value) async {
     final prefs = await instanceFuture;
-    await prefs.setBool('languageEn', value);
+    await prefs.setString('language', value.name);
   }
 }

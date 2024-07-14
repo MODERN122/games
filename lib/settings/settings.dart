@@ -2,7 +2,10 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:baby_animals_app/l10n/languages.dart';
+import 'package:baby_animals_app/main.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
 import 'persistence/local_storage_settings_persistence.dart';
@@ -33,7 +36,7 @@ class SettingsController {
   ValueNotifier<bool> musicOn = ValueNotifier(true);
 
   /// Whether or not the language is en.
-  ValueNotifier<bool> languageEn = ValueNotifier(true);
+  ValueNotifier<Language> language = ValueNotifier(Language.unknown);
 
   /// Creates a new instance of [SettingsController] backed by [store].
   ///
@@ -60,9 +63,21 @@ class SettingsController {
     _store.saveSoundsOn(soundsOn.value);
   }
 
-  void toggleLanguageEn() {
-    languageEn.value = !languageEn.value;
-    _store.saveLanguageEn(languageEn.value);
+  void toggleLanguage() {
+    language.value = getNextLanguage(language.value);
+    _store.saveLanguage(language.value);
+  }
+
+  void setLanguage(Language lang) {
+    language.value = lang;
+    _store.saveLanguage(language.value);
+  }
+
+  static Language getNextLanguage(Language lang) {
+    var languages = Language.values
+        .where((element) => element != Language.unknown)
+        .toList();
+    return languages[(lang.index + 1) % languages.length];
   }
 
   /// Asynchronously loads values from the injected persistence store.
@@ -83,9 +98,10 @@ class SettingsController {
       _store
           .getMusicOn(defaultValue: true)
           .then((value) => musicOn.value = value),
-      _store
-          .getLanguageEn(defaultValue: true)
-          .then((value) => languageEn.value = value),
+      _store.getLanguage(defaultValue: Language.unknown).then((value) {
+        if (value == Language.unknown) return;
+        language.value = value;
+      }),
     ]);
 
     _log.fine(() => 'Loaded settings: $loadedValues');

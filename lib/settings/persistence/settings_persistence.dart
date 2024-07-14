@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:baby_animals_app/l10n/languages.dart';
+
 /// An interface of persistence stores for settings.
 ///
 /// Implementations can range from simple in-memory storage through
@@ -15,7 +17,7 @@ abstract class SettingsPersistence {
 
   Future<bool> getSoundsOn({required bool defaultValue});
 
-  Future<bool> getLanguageEn({required bool defaultValue});
+  Future<Language> getLanguage({required Language defaultValue});
 
   Future<void> saveAudioOn(bool value);
 
@@ -25,5 +27,5 @@ abstract class SettingsPersistence {
 
   Future<void> saveSoundsOn(bool value);
 
-  Future<void> saveLanguageEn(bool value);
+  Future<void> saveLanguage(Language value);
 }

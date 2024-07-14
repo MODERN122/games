@@ -1,4 +1,6 @@
+import 'package:baby_animals_app/settings/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:random_color/random_color.dart';
 
 enum AnimalType {
@@ -15,15 +17,10 @@ class Animal {
     required this.type,
     required this.context,
   }) {
-    Locale locale = Localizations.localeOf(context);
-    String localePath = locale.languageCode.toLowerCase();
-
-    if (localePath == 'und') {
-      localePath = 'en';
-    }
-
+    final settings = Provider.of<SettingsController>(context, listen: false);
     image = "$_baseImageUrl${type.name}.svg";
-    soundName = "$_baseSoundNameUrl$localePath/${type.name}.wav";
+    soundName =
+        "$_baseSoundNameUrl${settings.language.value.name}/${type.name}.wav";
     soundOfAnimal = "$_baseSoundOfAnimalUrl${type.name}.mp3";
     backGroundColor = RandomColor().randomColor();
   }

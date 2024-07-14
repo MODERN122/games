@@ -5,6 +5,8 @@
 import 'dart:developer' as dev;
 
 import 'package:baby_animals_app/animals/animals_repository.dart';
+import 'package:baby_animals_app/l10n/languages.dart';
+import 'package:baby_animals_app/main_menu/main_menu_screen.dart';
 import 'package:baby_animals_app/mouse_tracker/mouse_tracker.dart';
 import 'package:baby_animals_app/mouse_tracker/mouse_tracker_provider.dart';
 import 'package:flutter/foundation.dart';
@@ -70,12 +72,6 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return AppLifecycleObserver(
       child: MultiProvider(
-        // This is where you add objects that you want to have available
-        // throughout your game.
-        //
-        // Every widget in the game can access these objects by calling
-        // `context.watch()` or `context.read()`.
-        // See `lib/main_menu/main_menu_screen.dart` for example usage.
         providers: [
           Provider(create: (context) => AnimalsRepository()),
           ChangeNotifierProvider(create: (context) => MouseTrackerProvider()),
@@ -97,14 +93,6 @@ class _MyAppState extends State<MyApp> {
         ],
         child: Builder(builder: (context) {
           final palette = context.watch<Palette>();
-          final settings = context.watch<SettingsController>();
-          settings.languageEn.addListener(
-            () => setLocale(
-              settings.languageEn.value
-                  ? const Locale("en", "US")
-                  : const Locale("ru", "RU"),
-            ),
-          );
 
           return MouseTracker(
             child: MaterialApp.router(
@@ -114,7 +102,6 @@ class _MyAppState extends State<MyApp> {
               theme: ThemeData.from(
                 colorScheme: ColorScheme.fromSeed(
                   seedColor: palette.darkPen,
-                  background: palette.backgroundMain,
                 ),
                 textTheme: TextTheme(
                   bodyMedium:

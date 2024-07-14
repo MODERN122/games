@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:baby_animals_app/l10n/languages.dart';
+import 'package:baby_animals_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -14,14 +16,40 @@ import '../style/palette.dart';
 import '../style/responsive_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class MainMenuScreen extends StatelessWidget {
+class MainMenuScreen extends StatefulWidget {
   const MainMenuScreen({super.key});
+
+  @override
+  State<MainMenuScreen> createState() => _MainMenuScreenState();
+}
+
+class _MainMenuScreenState extends State<MainMenuScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final settingsController =
+          Provider.of<SettingsController>(context, listen: false);
+      settingsController.language.addListener(() {
+        MyApp.setLocale(
+            context,
+            switch (settingsController.language.value) {
+              Language.en => const Locale("en", "US"),
+              Language.ru => const Locale("ru", "RU"),
+              Language.unknown => const Locale("en", "US"),
+            });
+      });
+      var languageName = AppLocalizations.of(context).localeName;
+      var language = Language.values.byName(languageName);
+      settingsController.setLanguage(language);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final palette = context.watch<Palette>();
-    final settingsController = context.watch<SettingsController>();
     final audioController = context.watch<AudioController>();
+    final settingsController = context.watch<SettingsController>();
 
     return PopScope(
       canPop: false,

@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:baby_animals_app/l10n/languages.dart';
+
 import 'settings_persistence.dart';
 
 /// An in-memory implementation of [SettingsPersistence].
@@ -15,7 +17,9 @@ class MemoryOnlySettingsPersistence implements SettingsPersistence {
 
   String playerName = 'Player';
 
-  bool languageEn = true;
+  Language language = Language.unknown;
+
+  String languageCode = "";
 
   @override
   Future<bool> getAudioOn({required bool defaultValue}) async => audioOn;
@@ -30,7 +34,8 @@ class MemoryOnlySettingsPersistence implements SettingsPersistence {
   Future<bool> getSoundsOn({required bool defaultValue}) async => soundsOn;
 
   @override
-  Future<bool> getLanguageEn({required bool defaultValue}) async => languageEn;
+  Future<Language> getLanguage({required Language defaultValue}) async =>
+      language;
 
   @override
   Future<void> saveAudioOn(bool value) async => audioOn = value;
@@ -45,5 +50,5 @@ class MemoryOnlySettingsPersistence implements SettingsPersistence {
   Future<void> saveSoundsOn(bool value) async => soundsOn = value;
 
   @override
-  Future<void> saveLanguageEn(bool value) async => languageEn = value;
+  Future<void> saveLanguage(Language value) async => language = value;
 }
