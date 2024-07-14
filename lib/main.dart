@@ -5,8 +5,6 @@
 import 'dart:developer' as dev;
 
 import 'package:baby_animals_app/animals/animals_repository.dart';
-import 'package:baby_animals_app/l10n/languages.dart';
-import 'package:baby_animals_app/main_menu/main_menu_screen.dart';
 import 'package:baby_animals_app/mouse_tracker/mouse_tracker.dart';
 import 'package:baby_animals_app/mouse_tracker/mouse_tracker_provider.dart';
 import 'package:flutter/foundation.dart';
