@@ -16,6 +16,12 @@ import '../settings/settings.dart';
 import 'songs.dart';
 import 'sounds.dart';
 
+class KeyAudioPlayer {
+  KeyAudioPlayer(this.key, this.audioPlayer);
+  Key? key;
+  AudioPlayer audioPlayer;
+}
+
 /// Allows playing music and sound. A facade to `package:audioplayers`.
 class AudioController {
   static final _log = Logger('AudioController');
@@ -26,7 +32,12 @@ class AudioController {
   /// sound effects.
   final List<AudioPlayer> _sfxPlayers;
 
+  /// This is a list of [AudioPlayer] instances which are rotated to play
+  /// sound animal effects.
+  final List<KeyAudioPlayer> _animalPlayers;
+
   int _currentSfxPlayer = 0;
+  int _currentAnimalPlayer = 0;
 
   final Queue<Song> _playlist;
 
@@ -41,7 +52,8 @@ class AudioController {
   /// Use [polyphony] to configure the number of sound effects (SFX) that can
   /// play at the same time. A [polyphony] of `1` will always only play one
   /// sound (a new sound will stop the previous one). See discussion
-  /// of [_sfxPlayers] to learn why this is the case.
+  /// of [_sfxPlayers] to learn why this is the case.See discussion
+  /// of [_animalPlayers] to learn why this is the case.
   ///
   /// Background music does not count into the [polyphony] limit. Music will
   /// never be overridden by sound effects because that would be silly.
@@ -51,6 +63,13 @@ class AudioController {
         _sfxPlayers = Iterable.generate(
                 polyphony, (i) => AudioPlayer(playerId: 'sfxPlayer#$i'))
             .toList(growable: false),
+        _animalPlayers = Iterable.generate(
+          polyphony,
+          (i) => KeyAudioPlayer(
+            null,
+            AudioPlayer(playerId: 'audioPlayer#$i'),
+          ),
+        ).toList(growable: false),
         _playlist = Queue.of(List<Song>.of(songs)..shuffle()) {
     _musicPlayer.onPlayerComplete.listen(_handleSongFinished);
     unawaited(_preloadSfx());
@@ -72,6 +91,9 @@ class AudioController {
     for (final player in _sfxPlayers) {
       player.dispose();
     }
+    for (final player in _animalPlayers) {
+      player.audioPlayer.dispose();
+    }
   }
 
   /// Plays a single sound effect, defined by [type].
@@ -79,7 +101,7 @@ class AudioController {
   /// The controller will ignore this call when the attached settings'
   /// [SettingsController.audioOn] is `true` or if its
   /// [SettingsController.soundsOn] is `false`.
-  void playSfx(SfxType type, {String asset = ""}) {
+  void playSfx(SfxType type, {Key? key, String asset = ""}) {
     final audioOn = _settings?.audioOn.value ?? false;
     if (!audioOn) {
       _log.fine(() => 'Ignoring playing sound ($type) because audio is muted.');
@@ -97,24 +119,32 @@ class AudioController {
     var currentVolume = _musicPlayer.volume;
     _musicPlayer.setVolume(0.2);
 
-    final currentPlayer = _sfxPlayers[_currentSfxPlayer];
-    _sfxPlayers[_currentSfxPlayer].onPlayerComplete.listen(
-      (event) {
-        _musicPlayer.setVolume(currentVolume);
-      },
-    );
     if (type == SfxType.assets) {
-      currentPlayer.play(AssetSource(asset), volume: soundTypeToVolume(type));
+      final currentPlayer = _animalPlayers[_currentAnimalPlayer];
+      currentPlayer.audioPlayer.onPlayerComplete.listen(
+        (event) {
+          _musicPlayer.setVolume(currentVolume);
+        },
+      );
+      currentPlayer.audioPlayer
+          .play(AssetSource(asset), volume: soundTypeToVolume(type));
+      currentPlayer.key = key;
+      _currentAnimalPlayer = (_currentAnimalPlayer + 1) % _animalPlayers.length;
     } else {
+      final currentPlayer = _sfxPlayers[_currentSfxPlayer];
+      currentPlayer.onPlayerComplete.listen(
+        (event) {
+          _musicPlayer.setVolume(currentVolume);
+        },
+      );
       final options = soundTypeToFilename(type);
       final filename = options[_random.nextInt(options.length)];
       _log.fine(() => '- Chosen filename: $filename');
 
       currentPlayer.play(AssetSource('sfx/$filename'),
           volume: soundTypeToVolume(type));
+      _currentSfxPlayer = (_currentSfxPlayer + 1) % _sfxPlayers.length;
     }
-
-    _currentSfxPlayer = (_currentSfxPlayer + 1) % _sfxPlayers.length;
   }
 
   /// Enables the [AudioController] to listen to [AppLifecycleState] events,
@@ -277,11 +307,22 @@ class AudioController {
     }
   }
 
+  void stopKeySound(Key key) {
+    for (final player in _animalPlayers) {
+      if (player.key == key) {
+        player.audioPlayer.stop();
+      }
+    }
+  }
+
   void _stopAllSound() {
     _log.info('Stopping all sound');
     _musicPlayer.pause();
     for (final player in _sfxPlayers) {
       player.stop();
+    }
+    for (final player in _animalPlayers) {
+      player.audioPlayer.stop();
     }
   }
 }

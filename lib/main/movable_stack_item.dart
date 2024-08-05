@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jovial_svg/jovial_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:after_layout/after_layout.dart';
 
 class MovableStackItem extends StatefulWidget {
   const MovableStackItem({
@@ -27,12 +28,14 @@ class MovableStackItem extends StatefulWidget {
   }
 }
 
-class _MovableStackItemState extends State<MovableStackItem> {
+class _MovableStackItemState extends State<MovableStackItem>
+    with AfterLayoutMixin {
   double xPosition = 0;
   double yPosition = 0;
 
   final Size bigRectSize = Size(150, 150);
   final double feedbackScale = 0.5;
+  late AudioController _audioController;
 
   @override
   void initState() {
@@ -42,8 +45,18 @@ class _MovableStackItemState extends State<MovableStackItem> {
   }
 
   @override
+  void dispose() {
+    _audioController.stopKeySound(widget.key!);
+    super.dispose();
+  }
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+    _audioController = Provider.of<AudioController>(context, listen: false);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final audioController = context.watch<AudioController>();
     var animal = widget.animal;
 
     return FutureBuilder(
@@ -99,12 +112,14 @@ class _MovableStackItemState extends State<MovableStackItem> {
               onDraggableCanceled: (velocity, offset) {},
               onDragCompleted: () {},
               onDragStarted: () {
-                audioController.playSfx(
+                _audioController.playSfx(
                   SfxType.assets,
+                  key: widget.key,
                   asset: animal.soundName,
                 );
-                audioController.playSfx(
+                _audioController.playSfx(
                   SfxType.assets,
+                  key: widget.key,
                   asset: animal.soundOfAnimal,
                 );
               },
