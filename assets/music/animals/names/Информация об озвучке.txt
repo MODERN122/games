@@ -1,0 +1,4 @@
+Озвучка сделана от сбера
+Для en использовался диктор Kira
+Для ru использовался диктор Александра
+Сайт: https://developers.sber.ru/portal/products/smartspeech

@@ -22,5 +22,11 @@ class AnimalsRepository {
     availableAnimalTypes.add(
       AnimalType.dog,
     );
+    availableAnimalTypes.add(
+      AnimalType.chicken,
+    );
+    availableAnimalTypes.add(
+      AnimalType.sheep,
+    );
   }
 }

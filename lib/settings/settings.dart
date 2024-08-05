@@ -3,9 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:baby_animals_app/l10n/languages.dart';
-import 'package:baby_animals_app/main.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
 import 'persistence/local_storage_settings_persistence.dart';
