@@ -1,6 +1,6 @@
-import 'package:after_layout/after_layout.dart';
 import 'package:baby_animals_app/animals/animals.dart';
 import 'package:baby_animals_app/audio/audio_controller.dart';
+import 'package:baby_animals_app/audio/sounds.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,8 +27,7 @@ class MovableStackItem extends StatefulWidget {
   }
 }
 
-class _MovableStackItemState extends State<MovableStackItem>
-    with AfterLayoutMixin {
+class _MovableStackItemState extends State<MovableStackItem> {
   double xPosition = 0;
   double yPosition = 0;
 
@@ -40,11 +39,6 @@ class _MovableStackItemState extends State<MovableStackItem>
     yPosition = widget.top;
     xPosition = widget.left;
     super.initState();
-  }
-
-  @override
-  void afterFirstLayout(BuildContext context) {
-    _audioController = Provider.of<AudioController>(context, listen: false);
   }
 
   @override
