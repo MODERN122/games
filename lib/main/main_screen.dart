@@ -36,6 +36,9 @@ class _MainScreenState extends State<MainScreen> {
       timer =
           Timer.periodic(Duration(seconds: 1), (Timer t) => checkIsLocked());
     }
+    addMovableStackItem(context);
+    addMovableStackItem(context, top: 240);
+    addMovableStackItem(context, left: 190);
   }
 
   // this method shows the modal dialog
@@ -55,12 +58,18 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  void addMovableStackItem(BuildContext context) {
+  void addMovableStackItem(
+    BuildContext context, {
+    double top = 40,
+    double left = 10,
+  }) {
     final animalsRepository = context.read<AnimalsRepository>();
     // int randomIndex =
     //     Random().nextInt(animalsRepository.availableAnimalTypes.length);
     int index = indexCount++ % animalsRepository.availableAnimalTypes.length;
     movableItems.add(MovableStackItem(
+      top: top,
+      left: left,
       animal: Animal(
           type: animalsRepository.availableAnimalTypes[index],
           context: context),
@@ -70,11 +79,11 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void popUpMovedItem(MovableStackItem item) {
-    setState(() {
-      if (movableItems.remove(item)) {
-        movableItems.add(item);
-      }
-    });
+    // setState(() {
+    //   if (movableItems.remove(item)) {
+    //     movableItems.add(item);
+    //   }
+    // });
   }
 
   @override
@@ -168,6 +177,8 @@ class _MainScreenState extends State<MainScreen> {
               bottom: 20,
               child: Align(
                 alignment: Alignment.bottomCenter,
+                //Область для удаления обьектов
+                //при перетаскивании на кнопку удалить
                 child: DragTarget<MovableStackItem>(
                   builder: (context, candidateData, rejectedData) {
                     return IconButton(
@@ -191,6 +202,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
             ),
+            //Нижняя область для удаления обьектов
             Positioned.fill(
               bottom: -40,
               child: Align(
