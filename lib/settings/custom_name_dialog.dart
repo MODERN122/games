@@ -2,10 +2,9 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:baby_animals_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void showCustomNameDialog(BuildContext context) {
   showGeneralDialog(

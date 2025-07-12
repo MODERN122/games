@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import '../style/palette.dart';
 import 'package:flutter_lock_task/flutter_lock_task.dart';
 import 'dart:async';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:baby_animals_app/l10n/app_localizations.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

@@ -2,9 +2,9 @@ name: baby_animals_app
 description: App with animals voices for babies
 
 # Prevent accidental publishing to pub.dev.
-publish_to: 'none'
+publish_to: "none"
 
-version: 1.0.2+4
+version: 1.1.0+5
 
 environment:
   sdk: ^3.0.0
@@ -25,7 +25,7 @@ dependencies:
   flutter_lock_task: ^0.0.2
   jovial_svg: ^1.1.20
   flutter_svg: ^2.0.9
-  intl: ^0.19.0
+  intl: ^0.20.2
   after_layout: ^1.2.0
 
 dev_dependencies:

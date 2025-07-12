@@ -5,6 +5,7 @@
 import 'dart:developer' as dev;
 
 import 'package:baby_animals_app/animals/animals_repository.dart';
+import 'package:baby_animals_app/l10n/app_localizations.dart';
 import 'package:baby_animals_app/mouse_tracker/mouse_tracker.dart';
 import 'package:baby_animals_app/mouse_tracker/mouse_tracker_provider.dart';
 import 'package:flutter/foundation.dart';
@@ -20,7 +21,6 @@ import 'router.dart';
 import 'settings/settings.dart';
 import 'style/palette.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   // Baby Animals App logging setup.
