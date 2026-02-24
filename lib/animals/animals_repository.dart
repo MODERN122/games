@@ -28,5 +28,8 @@ class AnimalsRepository {
     availableAnimalTypes.add(
       AnimalType.sheep,
     );
+    availableAnimalTypes.add(
+      AnimalType.goat,
+    );
   }
 }

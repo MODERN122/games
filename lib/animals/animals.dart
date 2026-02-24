@@ -12,6 +12,8 @@ enum AnimalType {
   wolf,
   chicken,
   sheep,
+  donkey,
+  goat,
 }
 
 class Animal {

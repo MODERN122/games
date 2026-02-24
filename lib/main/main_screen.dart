@@ -11,8 +11,8 @@ import 'package:baby_animals_app/main/movable_stack_item.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:kiosk_mode/kiosk_mode.dart';
 import '../style/palette.dart';
-import 'package:flutter_lock_task/flutter_lock_task.dart';
 import 'dart:async';
 import 'package:baby_animals_app/l10n/app_localizations.dart';
 
@@ -47,9 +47,9 @@ class _MainScreenState extends State<MainScreen> {
     final result = await Navigator.of(context).push(FullScreenModal());
     // ignore: use_build_context_synchronously
     if (result == AppLocalizations.of(context).unlock) {
-      FlutterLockTask().stopLockTask().then((value) {
+      await stopKioskMode().then((value) {
         if (kDebugMode) {
-          print("stopLockTask: $value");
+          print("stopKioskMode: $value");
         }
         setState(() {
           timer?.cancel();
@@ -94,11 +94,12 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future checkIsLocked() async {
-    await FlutterLockTask().isInLockTaskMode().then(
+    await getKioskMode().then(
       (value) {
-        if (isLocked != value) {
+        var isKioskMode = value == KioskMode.enabled;
+        if (isLocked != isKioskMode) {
           setState(() {
-            isLocked = value;
+            isLocked = isKioskMode;
           });
         }
       },
@@ -158,9 +159,9 @@ class _MainScreenState extends State<MainScreen> {
                       if (isLocked) {
                         _showModal(context);
                       } else {
-                        FlutterLockTask().startLockTask().then((value) {
+                        await startKioskMode().then((value) {
                           if (kDebugMode) {
-                            print("startLockTask: $value");
+                            print("startKioskMode: $value");
                           }
                           setState(() {
                             timer = Timer.periodic(Duration(seconds: 1),
